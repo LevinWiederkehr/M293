@@ -1,91 +1,134 @@
 /* style.css */
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    background-color: #1a1a1a;
-    color: #f4f4f9;
+    background-color: #f4f4f9;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Header Styles */
 header {
-    background-image: url('header-bg.jpg');
-    background-size: cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('header-bg.jpg') no-repeat center center/cover;
     color: #fff;
-    padding: 1rem 2rem;
+    padding: 2rem;
     text-align: center;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.logo img {
-    height: 50px;
+header h1 {
+    font-size: 3rem;
+    margin: 0;
+    text-shadow: 2px 2px 4px #000;
 }
 
-nav ul {
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+header nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
     justify-content: center;
     animation: slideIn 1s ease-out;
+    gap: 30px; /* Added gap for better spacing */
 }
 
-nav ul li {
+header nav ul li {
     margin: 0 1rem;
+    position: relative;
 }
 
-nav ul li a {
-    color: #fff;
+header nav ul li a {
+    color: #ffd700;  /* Gold color for better visibility */
     text-decoration: none;
     font-size: 1.2rem;
+    font-weight: bold;
     position: relative;
     transition: color 0.3s, transform 0.3s;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);  /* Adding shadow to text for better readability */
 }
 
-nav ul li a::before {
+header nav ul li a::before {
     content: '';
     position: absolute;
     width: 0%;
     height: 2px;
     bottom: -5px;
     left: 0;
-    background-color: #ff69b4;
+    background-color: #ff4500; /* Bright orange for underline */
     transition: width 0.3s;
 }
 
-nav ul li a:hover::before {
+header nav ul li a:hover::before {
     width: 100%;
 }
 
-nav ul li a:hover {
-    color: #ff69b4;
-    transform: scale(1.05);
+header nav ul li a:hover {
+    color: #ff4500;  /* Bright orange on hover */
+    transform: scale(1.1);  /* Slight zoom effect on hover */
 }
 
-.cart button {
-    background-color: #ff69b4;
-    border: none;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+/* Additional Anime/Manga Styling */
+header::before {
+    content: '';
+    background: url('header-anime-overlay.png') no-repeat center center/cover;
+    opacity: 0.2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    animation: floatAnimation 5s infinite ease-in-out;
 }
 
-.cart button:hover {
-    background-color: #ff1493;
-    transform: scale(1.05);
+/* Float Animation */
+@keyframes floatAnimation {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
+/* Adding some sparkles */
+header::after {
+    content: '';
+    background: url('sparkles.png') repeat;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    animation: sparkleAnimation 3s infinite linear;
+}
+
+@keyframes sparkleAnimation {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+/* Other CSS styles unchanged */
 main {
     padding: 1rem;
 }
@@ -102,8 +145,7 @@ main {
     border-radius: 10px;
     padding: 1rem;
     text-align: center;
-    background-color: #2a2a2a;
-    color: #fff;
+    background-color: #fff;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -122,12 +164,12 @@ main {
 .products-grid .product h3 {
     margin: 1rem 0 0.5rem;
     font-size: 1.5rem;
-    color: #ff69b4;
+    color: #333;
 }
 
 .products-grid .product p {
     margin: 0.5rem 0;
-    color: #ccc;
+    color: #666;
 }
 
 .products-grid .product button {
@@ -152,7 +194,7 @@ main {
     padding: 2rem;
     border: 2px solid #ff69b4;
     border-radius: 10px;
-    background-color: #2a2a2a;
+    background-color: #fff;
     text-align: center;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
 }
@@ -168,12 +210,12 @@ main {
 .product-detail h2 {
     margin: 1rem 0;
     font-size: 2rem;
-    color: #ff69b4;
+    color: #333;
 }
 
 .product-detail p {
     margin: 0.5rem 0;
-    color: #ccc;
+    color: #666;
 }
 
 .product-detail form {
@@ -236,67 +278,3 @@ footer {
         grid-template-columns: 1fr;
     }
 }
-
-/* Hinzufügen des CSS für den Warenkorb */
-.cart-container {
-    background-color: #2a2a2a;
-    color: #fff;
-    padding: 1rem;
-    border: 2px solid #ff69b4;
-    border-radius: 10px;
-    box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
-    position: absolute;
-    top: 10%;
-    right: 10%;
-    z-index: 1000;
-}
-
-.cart-container h2 {
-    text-align: center;
-}
-
-.cart-container ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.cart-container ul li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #ccc;
-}
-
-.cart-container ul li:last-child {
-    border-bottom: none;
-}
-
-.cart-container ul li span {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.cart-container p {
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.cart-container button {
-    background-color: #ff69b4;
-    border: none;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.cart-container button:hover {
-    background-color: #ff1493;
-    transform: scale(1.05);
-}
-
