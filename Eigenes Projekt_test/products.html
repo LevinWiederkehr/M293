@@ -25,6 +25,16 @@
         </div>
     </header>
     <main>
+        <div class="filter">
+            <label for="genre-select">Genre:</label>
+            <select id="genre-select" onchange="filterByGenre()">
+                <option value="all">Alle</option>
+                <option value="shonen">Shonen</option>
+                <option value="seinen">Seinen</option>
+                <option value="shojo">Shojo</option>
+                <option value="josei">Josei</option>
+            </select>
+        </div>
         <section class="product-list">
             <h2>Alle Produkte</h2>
             <div class="products-grid" id="all-products"></div>
