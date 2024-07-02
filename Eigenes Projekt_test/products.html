@@ -29,16 +29,28 @@
             <label for="genre-select">Genre:</label>
             <select id="genre-select" onchange="filterByGenre()">
                 <option value="all">Alle</option>
-                <option value="shonen">Shonen</option>
-                <option value="seinen">Seinen</option>
-                <option value="shojo">Shojo</option>
-                <option value="josei">Josei</option>
+                <option value="Dark Fantasy">Dark Fantasy</option>
+                <option value="Abenteuer">Abenteuer</option>
+                <option value="Psychothriller">Psychothriller</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Action">Action</option>
+                <option value="Romanze">Romanze</option>
+                <option value="Drama">Drama</option>
+                <option value="Horror">Horror</option>
+                <option value="Science-Fiction">Science-Fiction</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Isekai">Isekai</option>
+                <option value="Superhelden">Superhelden</option>
             </select>
+            <!--<label for="search-input">Suche:</label>
+            <input type="text" id="search-input" oninput="filterByName()" placeholder="Manga suchen...">-->
         </div>
+        <div id="all-products-container">
         <section class="product-list">
             <h2>Alle Produkte</h2>
             <div class="products-grid" id="all-products"></div>
         </section>
+        </div>
     </main>
     <footer>
         <p>&copy; 2024 Mangas Webshop</p>
