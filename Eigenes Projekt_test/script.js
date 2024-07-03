@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    window.addEventListener('unload', function() {
+    localStorage.removeItem('accountCreated');
+    localStorage.removeItem('username');
+});
+
     const trendProducts = [
         { id: 26, title: 'Kaiju No. 8', image: 'img/Kaiju_No_8.jpg', description: 'Riesige, godzilla-artige Lebensformen, genannt Kaiju, machen die Straßen Japans unsicher. Um die Menschheit zu verteidigen, wurde eine militärische Eliteeinheit namens Defense Corps ins Leben gerufen. Ihnen zur Hand gehen die Mitglieder der Professional Kaiju Cleaner Corporation, deren Aufgabe darin besteht, die Überreste der monströsen Wesen zu beseitigen.', price: '12.00' },
         { id: 17, title: 'Mushoku Tensei', image: 'img/Mushoku_Tensei.jpg', description: 'Nachdem ein arbeitsloser 34-jähriger Otaku von seiner Familie aus seinem Haus geworfen wurde und eine Sackgasse im Leben erreicht hat, erinnerte er sich, dass sein Leben tatsächlich viel besser hätte sein können, wenn er in der Vergangenheit bessere Entscheidungen getroffen hätte. Also beschließt er, dass es Zeit ist, ein neues Kapitel in seinem Leben aufzuschlagen. Kaum hatte er diese Entscheidung getroffen, sah er einen Lastwagen, der sich mit hoher Geschwindigkeit auf drei Schüler zu bewegte. Er sammelte all seine Kraft und versuchte sie zu retten, wurde dabei aber selbst vom Lastwagen überfahren und sein Leben, samt seiner guten Vorsätze, endete schlagartig.', price: '12.00' },
@@ -10,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 30, title: 'Sousou no Frieren', image: 'img/Frieren.jpg', description: 'Nach zehn langen, anstrengenden Jahren hat die Heldengruppe es geschafft: Der Dämonenkönig ist Geschichte! Die Gruppe, bestehend aus dem Helden Himmel, dem Zwergenkrieger Eisen, dem Pastor Heiter und der Elfenmagierin Frieren, kehrt nun als Helden nach Hause zurück. Da erscheint es bei ihrer ausgelassenen Feier zu einem Erä-Meteorschauer, der nur alle 50 Jahre wieder kommt. Angespornt von Frieren, die einen besseren Ort zum Schauen kennt, versprechen sich alle zum nächsten Meteorschauer nochmals zusammenzukommen.', price: '12.00' },
         { id: 34, title: 'My Hero Academia', image: 'img/My_Hero_Academia.jpg', description: 'Menschen sind von Geburt an nicht alle gleich. Das hat der damals vierjährige Izuku Midoriya mitbekommen, als er von seinen Mitschülern, die alle Superkräfte besitzen, gemobbt wurde. Izuku gehört zu den wenigen Menschen, die ohne Superkräfte geboren wurden. Dieses Schicksal hat ihn jedoch nicht daran gehindert, seinen Traum zu verfolgen – den Traum, ein großer Superheld zu werden wie der legendäre Held All Might. Um ein Held zu werden, möchte er unbedingt einer Heldenschule beitreten – und zwar der angesehensten Heldenschule im gesamten Land. Mit der Hilfe seines Idols All Might versucht er nun, in der Schule angenommen und zu einem großartigen Superhelden zu werden.', price: '12.00' },
         { id: 35, title: 'Konosuba!', image: 'img/Konosuba.jpg', description: 'Als der Schüler und Gamer Kazuma Satou eines Tages von seinem Einkauf zurückkehrt, erblickt er wie ein Mädchen beinahe von einem Traktor überfahren wird. Prompt versucht er sie zu retten, stirbt dabei jedoch selbst. Als er wieder erwacht, steht vor ihm ein Mädchen mit blauem Haar, das sich ihm als Göttin vorstellt. Sie gewährt ihm ein neues „Leben“ in einer Welt, die sich gänzlich von seiner altbekannten unterscheidet. Jedoch darf er nur eine Sache in diese Welt mit sich nehmen. Nach langem Überlegen entscheidet Kazuma sich dazu, die Göttin selbst zu wählen. Überrascht wird diese mit ihm zusammen in die neue Welt transportiert, in der sie sich gleich auf die Suche nach einer Unterkunft und nach etwas zu essen machen. Doch werden die beiden es schaffen, gemeinsam ihr neues Leben zu beschreiten …?', price: '12.00' },
+        // Weitere Produkte hinzufügen
     ]
     
     const bestProducts = [
@@ -78,17 +85,40 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 35, title: 'Konosuba!', image: 'img/Konosuba.jpg', description: 'Als der Schüler und Gamer Kazuma Satou eines Tages von seinem Einkauf zurückkehrt, erblickt er wie ein Mädchen beinahe von einem Traktor überfahren wird. Prompt versucht er sie zu retten, stirbt dabei jedoch selbst. Als er wieder erwacht, steht vor ihm ein Mädchen mit blauem Haar, das sich ihm als Göttin vorstellt. Sie gewährt ihm ein neues „Leben“ in einer Welt, die sich gänzlich von seiner altbekannten unterscheidet. Jedoch darf er nur eine Sache in diese Welt mit sich nehmen. Nach langem Überlegen entscheidet Kazuma sich dazu, die Göttin selbst zu wählen. Überrascht wird diese mit ihm zusammen in die neue Welt transportiert, in der sie sich gleich auf die Suche nach einer Unterkunft und nach etwas zu essen machen. Doch werden die beiden es schaffen, gemeinsam ihr neues Leben zu beschreiten …?', price: '12.00', genres: ['Fantasy', 'Comedy'] },
         // Weitere Produkte hinzufügen
     ];
+    
+    let cart = [];
 
-    /*
-    if (document.getElementById('product-detail')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
-        const product = allProducts.find(p => p.id == productId);
-        if (product) {
-            displayProductDetails(product);
+    function updateCartUI() {
+        const cartContainer = document.getElementById('cart-container');
+        cartContainer.innerHTML = '';
+        let total = 0;
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = '<p>Ihr Warenkorb ist leer.</p>';
+        } else {
+            const ul = document.createElement('ul');
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.title} x ${item.quantity} - ${item.price * item.quantity} €`;
+                ul.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            cartContainer.appendChild(ul);
+            const totalP = document.createElement('p');
+            totalP.innerHTML = `Gesamt: ${total.toFixed(2)} €`;
+            cartContainer.appendChild(totalP);
         }
     }
-    */
+
+    function addToCart(product, quantity) {
+        const existingProduct = cart.find(item => item.id === product.id);
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
+        } else {
+            cart.push({ ...product, quantity });
+        }
+        updateCartUI();
+    }
 
     const trendProductsContainer = document.getElementById('trend-products');
     const bestProductsContainer = document.getElementById('best-products');
@@ -96,8 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const newProductsContainer = document.getElementById('new-products');
 
     if (trendProductsContainer) {
-        trendProducts.forEach(products => {
-            const productElement = createProductElement(products);
+        trendProducts.forEach(product => {
+            const productElement = createProductElement(product);
             trendProductsContainer.appendChild(productElement);
         });
     }
@@ -127,6 +157,72 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         alert('Newsletter Anmeldung erfolgreich!');
     });
+
+    // Konto-Status aus dem localStorage laden
+    if (localStorage.getItem('accountCreated')) {
+        document.getElementById('account-icon-image').src = 'account-created-icon.png';
+        updateAccountUI();
+    }
+
+    // Konto-Formular-Event-Listener
+    document.getElementById('account-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = event.target.username.value;
+        localStorage.setItem('accountCreated', 'true');
+        localStorage.setItem('username', username);
+        alert('Konto erfolgreich erstellt!');
+        document.getElementById('account').style.display = 'none';
+        document.getElementById('account-icon-image').src = 'account-created-icon.png';
+        updateAccountUI();
+    });
+
+    function updateAccountUI() {
+        const accountContainer = document.getElementById('account');
+        const username = localStorage.getItem('username');
+        accountContainer.innerHTML = `
+            <h2>Willkommen, ${username}</h2>
+            <button onclick="logout()">Ausloggen</button>
+        `;
+    }
+
+    window.logout = function() {
+        localStorage.removeItem('accountCreated');
+        localStorage.removeItem('username');
+        document.getElementById('account-icon-image').src = 'account-icon.png';
+        alert('Erfolgreich ausgeloggt!');
+    };
+
+    // Funktion zum Umschalten des Kontoformulars
+    window.toggleAccount = function() {
+        const accountContainer = document.getElementById('account');
+        const accountCreated = localStorage.getItem('accountCreated');
+        if (accountCreated) {
+            accountContainer.innerHTML = `
+                <h2>Willkommen, ${localStorage.getItem('username')}</h2>
+                <button onclick="logout()">Ausloggen</button>
+            `;
+        } else {
+            accountContainer.innerHTML = `
+                <h2>Konto erstellen</h2>
+                <form id="account-form">
+                    <input type="text" name="username" placeholder="Benutzername" required>
+                    <input type="password" name="password" placeholder="Passwort" required>
+                    <button type="submit">Konto erstellen</button>
+                </form>
+            `;
+            document.getElementById('account-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = event.target.username.value;
+                localStorage.setItem('accountCreated', 'true');
+                localStorage.setItem('username', username);
+                alert('Konto erfolgreich erstellt!');
+                document.getElementById('account').style.display = 'none';
+                document.getElementById('account-icon-image').src = 'account-created-icon.png';
+                updateAccountUI();
+            });
+        }
+        accountContainer.style.display = accountContainer.style.display === 'none' ? 'block' : 'none';
+    };
 
     document.getElementById('contact-form')?.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -168,12 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         document.getElementById('order-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            alert('Bestellung erfolgreich!');
-            // const quantity = parseInt(this.quantity.value);
-            // addToCart(product, quantitiy);
+            const quantity = parseInt(this.quantity.value);
+            addToCart(product, quantity);
+            alert('Bestellung erfolgreich');
         });
     }
-    
+
     window.filterByGenre = function() {
         const selectedGenre = document.getElementById('genre-select').value;
         const filteredProducts = selectedGenre === 'all' ? allProducts : allProducts.filter(product => product.genres.includes(selectedGenre));
@@ -183,6 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const productElement = createProductElement(product);
             allProductsContainer.appendChild(productElement);
         });
+    };
+
+    window.toggleCart = function() {
+        const cartContainer = document.getElementById('cart-container');
+        cartContainer.style.display = cartContainer.style.display === 'none' ? 'block' : 'none';
     };
 
     // Scroll-Animation
@@ -219,42 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
         handleScrollAnimation();
     });
 
-/*
-let cart = [];
-
-function addToCart(product, quantity) {
-    const existingProduct = cart.find(item => item.id === product.id);
-    if (existingProduct) {
-        existingProduct.quantity += quantity;
-    } else {
-        cart.push({ ...product, quantity });
-    }
-    updateCartDisplay();
-}
-
-function updateCartDisplay() {
-    const cartItemsContainer = document.getElementById('cart-items');
-    const totalPriceElement = document.getElementById('total-price');
-    cartItemsContainer.innerHTML = '';
-    let totalPrice = 0;
-
-    cart.forEach(item => {
-        const itemElement = document.createElement('li');
-        itemElement.innerHTML = `
-            <span>${item.title} (${item.quantity})</span>
-            <span>€${(item.price * item.quantity).toFixed(2)}</span>
-        `;
-        cartItemsContainer.appendChild(itemElement);
-        totalPrice += item.price * item.quantity;
-    });
-
-    totalPriceElement.textContent = `Gesamt: €${totalPrice.toFixed(2)}`;
-}
-
-window.toggleCart = function() {
-    const cartContainer = document.getElementById('cart');
-    cartContainer.style.display = cartContainer.style.display === 'none' ? 'block' : 'none';
-};
-*/
+    // Sicherstellen, dass Event-Listener für das Konto-Icon hinzugefügt werden
+    document.getElementById('account-icon')?.addEventListener('click', toggleAccount);
 
 });
