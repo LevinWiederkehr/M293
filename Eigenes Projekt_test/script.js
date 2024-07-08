@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = event.target.email.value;
+
+        emailjs.send("service_27oreke", "template_l4wkljr", {
+            email: email
+        }).then((response) => {
+            alert('Bestätigungs-E-Mail gesendet.');
+        }, (error) => {
+            console.error('Fehler:', error);
+            alert('Fehler beim Senden der Bestätigungs-E-Mail.');
+        });
+    });
     
     window.addEventListener('unload', function() {
     localStorage.removeItem('accountCreated');
@@ -86,7 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Weitere Produkte hinzufügen
     ];
     
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
 
     function updateCartUI() {
         const cartContainer = document.getElementById('cart-container');
@@ -99,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const ul = document.createElement('ul');
             cart.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `${item.title} x ${item.quantity} - ${item.price * item.quantity} €`;
+                li.innerHTML = `${item.title} x ${item.quantity} - ${(item.price * item.quantity).toFixed(2)} €`;
                 ul.appendChild(li);
                 total += item.price * item.quantity;
             });
@@ -107,6 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalP = document.createElement('p');
             totalP.innerHTML = `Gesamt: ${total.toFixed(2)} €`;
             cartContainer.appendChild(totalP);
+            const clearButton = document.createElement('button');
+            clearButton.innerText = 'Warenkorb leeren';
+            clearButton.onclick = clearCart;
+            cartContainer.appendChild(clearButton);
         }
     }
 
@@ -117,6 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             cart.push({ ...product, quantity });
         }
+        saveCart();
+        updateCartUI();
+    }
+
+    function clearCart() {
+        cart = [];
+        saveCart();
         updateCartUI();
     }
 
@@ -152,11 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             newProductsContainer.appendChild(productElement);
         });
     }
-
-    document.getElementById('newsletter-form')?.addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('Newsletter Anmeldung erfolgreich!');
-    });
 
     // Konto-Status aus dem localStorage laden
     if (localStorage.getItem('accountCreated')) {
@@ -284,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.toggleCart = function() {
         const cartContainer = document.getElementById('cart-container');
         cartContainer.style.display = cartContainer.style.display === 'none' ? 'block' : 'none';
+        updateCartUI();
     };
 
     // Scroll-Animation
@@ -322,5 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sicherstellen, dass Event-Listener für das Konto-Icon hinzugefügt werden
     document.getElementById('account-icon')?.addEventListener('click', toggleAccount);
+
+    // Sicherstellen, dass Event-Listener für das Warenkorb-Icon hinzugefügt werden
+    document.getElementById('cart-icon')?.addEventListener('click', toggleCart);
+
+    // Initiales Laden des Warenkorb-UI
+    updateCartUI();
 
 });
