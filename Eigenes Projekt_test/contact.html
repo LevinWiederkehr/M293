@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontakt - Mangas Webshop</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("wbc_ioztbdCC3KtDv");
+        })();
+    </script>
 </head>
 <body>
     <header>
@@ -54,14 +60,14 @@
         <section class="contact-form">
             <h2>Kontaktformular</h2>
             <form id="contact-form">
-                <input type="text" name="name" placeholder="Ihr Name" required>
-                <input type="email" name="email" placeholder="Ihre Email" required>
-                <select name="subject">
+                <input type="text" id="name" name="name" placeholder="Ihr Name" required>
+                <input type="email" id="email" name="email" placeholder="Ihre Email" required>
+                <select id="category" name="subject">
                     <option value="frage">Frage</option>
                     <option value="feedback">Feedback</option>
                     <option value="hilfe">Hilfe</option>
                 </select>
-                <textarea name="message" placeholder="Ihre Nachricht" required></textarea>
+                <textarea id="description" name="message" placeholder="Ihre Nachricht" required></textarea>
                 <button type="submit">Senden</button>
             </form>
         </section>

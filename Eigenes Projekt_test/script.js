@@ -1,19 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
-
-    document.getElementById('newsletter-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const email = event.target.email.value;
-
-        emailjs.send("service_27oreke", "template_l4wkljr", {
-            email: email
-        }).then((response) => {
-            alert('Bestätigungs-E-Mail gesendet.');
-        }, (error) => {
-            console.error('Fehler:', error);
-            alert('Fehler beim Senden der Bestätigungs-E-Mail.');
-        });
-    });
-    
+document.addEventListener('DOMContentLoaded', () => { 
     window.addEventListener('unload', function() {
     localStorage.removeItem('accountCreated');
     localStorage.removeItem('username');
@@ -126,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             totalP.innerHTML = `Gesamt: ${total.toFixed(2)} €`;
             cartContainer.appendChild(totalP);
             const clearButton = document.createElement('button');
+            clearButton.id = 'buttonWarenkorb';
             clearButton.innerText = 'Warenkorb leeren';
             clearButton.onclick = clearCart;
             cartContainer.appendChild(clearButton);
@@ -248,11 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         accountContainer.style.display = accountContainer.style.display === 'none' ? 'block' : 'none';
     };
 
-    document.getElementById('contact-form')?.addEventListener('submit', function(event) {
-        event.preventDefault();
-        alert('Nachricht gesendet!');
-    });
-
     if (document.getElementById('product-detail')) {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
@@ -355,3 +336,27 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
 
 });
+
+document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const category = document.getElementById('category').value;
+    const description = document.getElementById('description').value;
+
+    const templateParams = {
+        name: name,
+        email: email,
+        category: category,
+        description: description,
+        to_email: 'levin.wiederkehr@edu.tbz.ch'
+    };
+
+    emailjs.send('service_27oreke', 'template_l4wkljr', templateParams).then(function(response) {
+        alert('E-Mail erfolgreich gesendet!', response.status, response.text);
+        document.getElementById('contact-form').reset();
+    }, function(error) {
+        alert('Es gab einen Fehler beim Senden der E-Mail.', error);
+    });
+})
