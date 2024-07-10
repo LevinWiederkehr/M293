@@ -360,3 +360,26 @@ document.getElementById('contact-form').addEventListener('submit', function(even
         alert('Es gab einen Fehler beim Senden der E-Mail.', error);
     });
 })
+
+document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Standard-Formularübermittlung verhindern
+
+    const email = document.getElementById("email").value;
+    console.log("E-Mail Adresse:", email); // Debug: E-Mail Adresse überprüfen
+
+    const templateParams = {
+        email: 'levin.wiederkehr@edu.tbz.ch', // Ihre feste E-Mail-Adresse
+        to_email: email // Empfänger E-Mail-Adresse
+    };
+
+    console.log("Template-Parameter:", templateParams); // Debug: Template-Parameter überprüfen
+
+    emailjs.send('service_27oreke', 'template_dyu1ka8', templateParams)
+        .then(function(response) {
+            console.log('Erfolg:', response.status, response.text); // Debug: Erfolgsantwort überprüfen
+            alert('Newsletter erfolgreich abonniert!');
+        }, function(error) {
+            console.error('Fehler:', error); // Debug: Fehlerüberprüfung
+            alert('Es gab einen Fehler beim Abonnieren des Newsletters.');
+        });
+});

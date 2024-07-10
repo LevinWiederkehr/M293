@@ -8,8 +8,8 @@
     <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script type="text/javascript">
         (function() {
-            emailjs.init("aeU9QXgB9zNDvgvMB");
-        });
+            emailjs.init("wbc_ioztbdCC3KtDv");
+        })();
     </script>
 </head>
 <body>
@@ -51,9 +51,10 @@
         <section class="newsletter">
             <h2>Newsletter</h2>
             <form id="newsletter-form">
-                <input type="email" name="email" placeholder="Ihre Email" required>
+                <input type="email" id="email" placeholder="Ihre Email" required>
                 <button type="submit">Anmelden</button>
             </form>
+            <p id="responseMessage"></p>
         </section>
         <div id="account" class="account-container" style="display:none;">
             <h2>Konto erstellen</h2>
