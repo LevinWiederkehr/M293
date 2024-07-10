@@ -29,8 +29,8 @@
                 <button class="icon-button" onclick="toggleCart()">
                     <img src="cart-icon.png" alt="Warenkorb">
                 </button>
-                <button class="icon-button" id="account-icon" onclick="toggleAccount()">
-                    <img src="account-icon.png" alt="Konto erstellen" id="account-icon-image">
+                <button class="icon-button" onclick="toggleAccount()">
+                    <img src="account-icon.png" alt="Konto erstellen" class="icon">
                 </button>
             </div>
         </div>
@@ -51,19 +51,11 @@
         <section class="newsletter">
             <h2>Newsletter</h2>
             <form id="newsletter-form">
-                <input type="email" id="email" placeholder="Ihre Email" required>
+                <input type="email" id="email" name="email" placeholder="Ihre Email" required>
                 <button type="submit">Anmelden</button>
             </form>
-            <p id="responseMessage"></p>
         </section>
-        <div id="account" class="account-container" style="display:none;">
-            <h2>Konto erstellen</h2>
-            <form id="account-form">
-                <input type="text" name="username" placeholder="Benutzername" required>
-                <input type="password" name="password" placeholder="Passwort" required>
-                <button type="submit">Konto erstellen</button>
-            </form> 
-        </div>
+        <div id="account-container" class="account-container" style="display:none;"></div>
         <div id="cart-container" class="cart-container" style="display:none;"></div>
     </main>
     <footer>

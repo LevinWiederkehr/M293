@@ -1,7 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => { 
-    window.addEventListener('unload', function() {
-    localStorage.removeItem('accountCreated');
-    localStorage.removeItem('username');
+
+    // Initiales Laden des Warenkorb-UI
+    updateCartUI();
+
+    // Sicherstellen, dass Event-Listener für das Warenkorb-Icon hinzugefügt werden
+    document.getElementById('cart-icon')?.addEventListener('click', toggleCart);
+
+    // Sicherstellen, dass Event-Listener für das Konto-Icon hinzugefügt werden
+    document.getElementById('icon-button')?.addEventListener('click', toggleAccount);
+
+    // Initiales Laden des Account-UI
+    updateAccountUI();
+    
+    const form = document.getElementById('newsletter-form');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+
+            const templateParams = {
+                email: 'levin.wiederkehr@edu.tbz.ch', // Test-E-Mail-Adresse
+                to_email: email // Ziel-E-Mail-Adresse
+            };
+
+
+            emailjs.send('service_27oreke', 'template_dyu1ka8', templateParams)
+                .then(function(response) {
+                    alert('Newsletter erfolgreich abonniert!');
+                }, function(error) {
+                    alert('Es gab einen Fehler beim Abonnieren des Newsletters.');
+                });
+        });
+    } else {
+        console.error('Das Formular "newsletter-form" wurde nicht gefunden.');
+    }
+
 });
 
     const trendProducts = [
@@ -168,71 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Konto-Status aus dem localStorage laden
-    if (localStorage.getItem('accountCreated')) {
-        document.getElementById('account-icon-image').src = 'account-created-icon.png';
-        updateAccountUI();
-    }
-
-    // Konto-Formular-Event-Listener
-    document.getElementById('account-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const username = event.target.username.value;
-        localStorage.setItem('accountCreated', 'true');
-        localStorage.setItem('username', username);
-        alert('Konto erfolgreich erstellt!');
-        document.getElementById('account').style.display = 'none';
-        document.getElementById('account-icon-image').src = 'account-created-icon.png';
-        updateAccountUI();
-    });
-
-    function updateAccountUI() {
-        const accountContainer = document.getElementById('account');
-        const username = localStorage.getItem('username');
-        accountContainer.innerHTML = `
-            <h2>Willkommen, ${username}</h2>
-            <button onclick="logout()">Ausloggen</button>
-        `;
-    }
-
-    window.logout = function() {
-        localStorage.removeItem('accountCreated');
-        localStorage.removeItem('username');
-        document.getElementById('account-icon-image').src = 'account-icon.png';
-        alert('Erfolgreich ausgeloggt!');
-    };
-
-    // Funktion zum Umschalten des Kontoformulars
-    window.toggleAccount = function() {
-        const accountContainer = document.getElementById('account');
-        const accountCreated = localStorage.getItem('accountCreated');
-        if (accountCreated) {
-            accountContainer.innerHTML = `
-                <h2>Willkommen, ${localStorage.getItem('username')}</h2>
-                <button onclick="logout()">Ausloggen</button>
-            `;
-        } else {
-            accountContainer.innerHTML = `
-                <h2>Konto erstellen</h2>
-                <form id="account-form">
-                    <input type="text" name="username" placeholder="Benutzername" required>
-                    <input type="password" name="password" placeholder="Passwort" required>
-                    <button type="submit">Konto erstellen</button>
-                </form>
-            `;
-            document.getElementById('account-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const username = event.target.username.value;
-                localStorage.setItem('accountCreated', 'true');
-                localStorage.setItem('username', username);
-                alert('Konto erfolgreich erstellt!');
-                document.getElementById('account').style.display = 'none';
-                document.getElementById('account-icon-image').src = 'account-created-icon.png';
-                updateAccountUI();
-            });
-        }
-        accountContainer.style.display = accountContainer.style.display === 'none' ? 'block' : 'none';
-    };
 
     if (document.getElementById('product-detail')) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -326,17 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
         handleScrollAnimation();
     });
 
-    // Sicherstellen, dass Event-Listener für das Konto-Icon hinzugefügt werden
-    document.getElementById('account-icon')?.addEventListener('click', toggleAccount);
-
-    // Sicherstellen, dass Event-Listener für das Warenkorb-Icon hinzugefügt werden
-    document.getElementById('cart-icon')?.addEventListener('click', toggleCart);
-
-    // Initiales Laden des Warenkorb-UI
-    updateCartUI();
-
-});
-
 document.getElementById('contact-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -359,27 +318,62 @@ document.getElementById('contact-form').addEventListener('submit', function(even
     }, function(error) {
         alert('Es gab einen Fehler beim Senden der E-Mail.', error);
     });
-})
-
-document.getElementById('newsletter-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Standard-Formularübermittlung verhindern
-
-    const email = document.getElementById("email").value;
-    console.log("E-Mail Adresse:", email); // Debug: E-Mail Adresse überprüfen
-
-    const templateParams = {
-        email: 'levin.wiederkehr@edu.tbz.ch', // Ihre feste E-Mail-Adresse
-        to_email: email // Empfänger E-Mail-Adresse
-    };
-
-    console.log("Template-Parameter:", templateParams); // Debug: Template-Parameter überprüfen
-
-    emailjs.send('service_27oreke', 'template_dyu1ka8', templateParams)
-        .then(function(response) {
-            console.log('Erfolg:', response.status, response.text); // Debug: Erfolgsantwort überprüfen
-            alert('Newsletter erfolgreich abonniert!');
-        }, function(error) {
-            console.error('Fehler:', error); // Debug: Fehlerüberprüfung
-            alert('Es gab einen Fehler beim Abonnieren des Newsletters.');
-        });
 });
+
+// Account Management
+let account = JSON.parse(localStorage.getItem('account')) || { isLoggedIn: false };
+
+function saveAccount() {
+    localStorage.setItem('account', JSON.stringify(account));
+}
+
+function updateAccountUI() {
+    const accountContainer = document.getElementById('account-container');
+    accountContainer.innerHTML = '';
+
+    if (!accountInfo.loggedIn) {
+        accountContainer.innerHTML = '<p>Sie sind nicht eingeloggt.</p>';
+        const loginButton = document.createElement('button');
+        loginButton.innerText = 'Login';
+        loginButton.onclick = () => {
+            // Example login process
+            accountInfo = { loggedIn: true, username: 'Benutzername' };
+            saveAccountInfo();
+            updateAccountUI();
+        };
+        accountContainer.appendChild(loginButton);
+    } else {
+        accountContainer.innerHTML = `<p>Willkommen, ${accountInfo.username}!</p>`;
+        const logoutButton = document.createElement('button');
+        logoutButton.innerText = 'Logout';
+        logoutButton.onclick = () => {
+            accountInfo = { loggedIn: false, username: '' };
+            saveAccountInfo();
+            updateAccountUI();
+        };
+        accountContainer.appendChild(logoutButton);
+    }
+}
+
+function toggleAccount() {
+    const accountContainer = document.getElementById('account-container');
+    if (accountContainer.style.display === 'none' || accountContainer.style.display === '') {
+        accountContainer.style.display = 'block';
+    } else {
+        accountContainer.style.display = 'none';
+    }
+    updateAccountUI();
+}
+function login(username, password) {
+    account = { username, password, isLoggedIn: true };
+    saveAccount();
+    updateAccountUI();
+    alert('Erfolgreich eingeloggt');
+}
+
+function logout() {
+    account = { isLoggedIn: false };
+    saveAccount();
+    updateAccountUI();
+    alert('Erfolgreich ausgeloggt');
+}
