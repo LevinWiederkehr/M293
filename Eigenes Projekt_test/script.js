@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sicherstellen, dass Event-Listener für das Konto-Icon hinzugefügt werden
     document.getElementById('icon-button')?.addEventListener('click', toggleAccount);
 
+    document.getElementById('register-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        registerAccount();
+    });
+
+    document.getElementById('logout-button').addEventListener('click', logout);
+
     // Initiales Laden des Account-UI
     updateAccountUI();
     
@@ -321,59 +328,45 @@ document.getElementById('contact-form').addEventListener('submit', function(even
 });
 
 // Account Management
-let account = JSON.parse(localStorage.getItem('account')) || { isLoggedIn: false };
-
-function saveAccount() {
-    localStorage.setItem('account', JSON.stringify(account));
-}
-
-function updateAccountUI() {
-    const accountContainer = document.getElementById('account-container');
-    accountContainer.innerHTML = '';
-
-    if (!accountInfo.loggedIn) {
-        accountContainer.innerHTML = '<p>Sie sind nicht eingeloggt.</p>';
-        const loginButton = document.createElement('button');
-        loginButton.innerText = 'Login';
-        loginButton.onclick = () => {
-            // Example login process
-            accountInfo = { loggedIn: true, username: 'Benutzername' };
-            saveAccountInfo();
-            updateAccountUI();
-        };
-        accountContainer.appendChild(loginButton);
-    } else {
-        accountContainer.innerHTML = `<p>Willkommen, ${accountInfo.username}!</p>`;
-        const logoutButton = document.createElement('button');
-        logoutButton.innerText = 'Logout';
-        logoutButton.onclick = () => {
-            accountInfo = { loggedIn: false, username: '' };
-            saveAccountInfo();
-            updateAccountUI();
-        };
-        accountContainer.appendChild(logoutButton);
-    }
-}
-
 function toggleAccount() {
     const accountContainer = document.getElementById('account-container');
-    if (accountContainer.style.display === 'none' || accountContainer.style.display === '') {
-        accountContainer.style.display = 'block';
-    } else {
-        accountContainer.style.display = 'none';
-    }
-    updateAccountUI();
+    accountContainer.style.display = accountContainer.style.display === 'none' ? 'block' : 'none';
 }
-function login(username, password) {
-    account = { username, password, isLoggedIn: true };
-    saveAccount();
-    updateAccountUI();
-    alert('Erfolgreich eingeloggt');
+
+function registerAccount() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username && password) {
+        localStorage.setItem('user', JSON.stringify({ username }));
+        updateAccountUI();
+        toggleAccount();
+    } else {
+        alert('Bitte füllen Sie beide Felder aus.');
+    }
 }
 
 function logout() {
-    account = { isLoggedIn: false };
-    saveAccount();
+    localStorage.removeItem('user');
     updateAccountUI();
-    alert('Erfolgreich ausgeloggt');
+}
+
+function updateAccountUI() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const accountContainer = document.getElementById('account-container');
+    const registerForm = document.getElementById('register-form');
+    const logoutButton = document.getElementById('logout-button');
+
+    if (user) {
+        registerForm.style.display = 'none';
+        logoutButton.style.display = 'block';
+        accountContainer.innerHTML = `<p>Willkommen, ${user.username}</p>` + accountContainer.innerHTML;
+    } else {
+        registerForm.style.display = 'block';
+        logoutButton.style.display = 'none';
+        const userInfo = accountContainer.querySelector('p');
+        if (userInfo) {
+            userInfo.remove();
+        }
+    }
 }

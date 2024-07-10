@@ -252,9 +252,7 @@ footer {
     }
 }
 
-/* Hinzufügen des CSS für den Warenkorb */
-/* style.css */
-
+/* CSS für den Warenkorb */
 .cart-container {
     background-color: #2a2a2a;
     color: #fff;
@@ -285,6 +283,62 @@ footer {
     font-weight: bold;
 }
 
+/* CSS für das Erstellen eines Accounts */
+.register-form {
+    background-color: #2a2a2a;
+    color: #fff;
+    padding: 2rem;
+    border: 2px solid #ff69b4;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.register-form h2 {
+    font-size: 2rem;
+    color: #ff69b4;
+}
+
+.register-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.register-form form input,
+.register-form form button {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    font-size: 1rem;
+}
+
+.register-form form input {
+    border: 2px solid #ff69b4;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+.register-form form button {
+    background-color: #ff69b4;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.register-form form button:hover {
+    background-color: #ff1493;
+    transform: scale(1.05);
+}
 
 /* Neues CSS für das Label */
 .filter {
@@ -511,12 +565,82 @@ footer {
     object-fit: contain;
 }
 
+/* Popup-Fenster CSS */
 #account-container {
-    border: 1px solid #ccc; /* Optional: Add some styling to the container */
-    padding: 10px; /* Optional: Add padding to the container */
-    background-color: #fff; /* Optional: Set background color */
-    position: absolute; /* Optional: Position the container */
-    top: 50px; /* Optional: Adjust the position */
-    right: 10px; /* Optional: Adjust the position */
-    z-index: 1000; /* Optional: Ensure it's above other elements */
+    border: 2px solid #ff69b4;
+    padding: 1rem;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    z-index: 1000;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.1);
+}
+
+#account-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#account-container form input,
+#account-container form select,
+#account-container form button {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    font-size: 1rem;
+}
+
+/* Input fields im Popup */
+#account-container form input {
+    border: 2px solid #ff69b4;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+/* Select field im Popup */
+#account-container form select {
+    border: 2px solid #ff69b4;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #fff;
+    appearance: none;
+    padding: 0.5rem;
+}
+
+/* Button im Popup */
+#account-container form button {
+    background-color: #ff69b4;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#account-container form button:hover {
+    background-color: #ff1493;
+    transform: scale(1.05);
+}
+
+#account-container .logout-button {
+    background-color: #ff69b4;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#account-container .logout-button:hover {
+    background-color: #ff1493;
+    transform: scale(1.05);
 }
