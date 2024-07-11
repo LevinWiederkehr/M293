@@ -349,6 +349,7 @@ function registerAccount() {
 function logout() {
     localStorage.removeItem('user');
     updateAccountUI();
+    location.reload();
 }
 
 function updateAccountUI() {
