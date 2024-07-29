@@ -207,6 +207,13 @@ main {
     font-size: 1rem;
 }
 
+.product-detail form input {
+    border: 2px solid #ff69b4;
+    border-radius: 5px;
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
 .product-detail form button {
     background-color: #ff69b4;
     border: none;
